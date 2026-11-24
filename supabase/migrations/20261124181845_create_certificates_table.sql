@@ -46,7 +46,7 @@ TO anon, authenticated
 USING (true);
 
 INSERT INTO certificates (certificate_id, student_name, language, level, course_name, issue_date, status) VALUES
-  ('LIN-2026-B1-00482', 'Youssef El Amrani', 'German', 'B1', 'German B1 Completion', '2026-03-15', 'valid'),
+  ('LIN-2026-B1-00482', 'Agourame Hicham', 'German', 'B1', 'German B1 Completion', '2026-03-15', 'valid'),
   ('LIN-2026-A2-00317', 'Salma Benkirane', 'German', 'A2', 'German A2 Completion', '2026-01-20', 'valid'),
   ('LIN-2026-C1-00591', 'Anas Tahiri', 'English', 'C1', 'English C1 — IELTS Pro', '2026-02-28', 'valid')
 ON CONFLICT (certificate_id) DO NOTHING;
