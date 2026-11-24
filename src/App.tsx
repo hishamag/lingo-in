@@ -237,12 +237,20 @@ function App() {
     }
     setIsSubmitting(true);
     setSubmitMessage(null);
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
     const { error } = await supabase.from('join_us_submissions').insert({ name: form.name.trim(), email: form.emailAddress.trim(), phone: form.phone.trim(), language: form.language, package_name: selectedPackage, current_level: form.currentLevel || null, class_time: form.classTime || null, message: form.message.trim() });
-    setIsSubmitting(false);
     if (error) {
+      setIsSubmitting(false);
       setSubmitMessage('error');
       return;
     }
+    await fetch(`${supabaseUrl}/functions/v1/send-booking-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${supabaseAnonKey}` },
+      body: JSON.stringify({ name: form.name.trim(), email: form.emailAddress.trim(), phone: form.phone.trim(), language: form.language, packageName: selectedPackage, currentLevel: form.currentLevel || null, classTime: form.classTime || null, message: form.message.trim() }),
+    }).catch(() => {});
+    setIsSubmitting(false);
     setForm({ name: '', email: '', phone: '', language, currentLevel: '', classTime: '', emailAddress: '', message: '' });
     setSubmitMessage('success');
   };
