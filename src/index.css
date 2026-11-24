@@ -35,6 +35,9 @@ button, input { font: inherit; }
 .culture-wave { position: absolute; inset: 0; border-radius: 2rem; opacity: .8; transition: opacity .25s; }
 .culture-wave::after { position: absolute; right: -30px; bottom: -30px; height: 120px; width: 120px; content: ''; border-radius: 50%; border: 2px solid rgba(20,184,166,.12); }
 .group:hover .culture-wave { opacity: 1; }
+.certificate-card { animation: float 7s ease-in-out infinite; }
+.certificate-glow { position: absolute; inset: -20px; background: radial-gradient(circle at 50% 50%, rgba(20,184,166,.15), transparent 70%); border-radius: 2rem; z-index: 0; }
+.certificate-border-inner { position: absolute; inset: 6px; border: 1px solid rgba(11,45,91,.1); border-radius: 1rem; pointer-events: none; }
 @keyframes live-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(1.5); } }
 @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-8px) rotate(.4deg); } }
 .section-kicker { color: #14b8a6; font-size: 12px; font-weight: 800; letter-spacing: .08em; }
