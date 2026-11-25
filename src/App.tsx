@@ -7,7 +7,10 @@ import { GermanPathway } from '@/components/GermanPathway';
 type Language = 'en' | 'fr' | 'de' | 'ar';
 
 const copy = {
-  en: { nav: ['Programs', 'About', 'Method', 'Packages', 'Contact'], start: 'Start learning', hero: 'Learn the language. Change your future.', accent: 'new space.', description: 'Practical language learning for study, careers, travel, and life in Germany.', programs: 'Explore programs', method: 'Our method', }
+  en: { nav: ['Programs', 'About', 'Method', 'Packages', 'Contact'], start: 'Start learning', hero: 'Learn the language. Change your future.', accent: 'new space.', description: 'Practical language training for real life, career growth, and international opportunities.', programs: 'Explore programs', consultation: 'Request a free consultation' },
+  fr: { nav: ['Programmes', 'À propos', 'Méthode', 'Forfaits', 'Contact'], start: 'Commencer', hero: 'Apprenez la langue. Changez votre avenir.', accent: 'nouvel horizon.', description: 'Une formation pratique pour la vie quotidienne, la carrière et les opportunités internationales.', programs: 'Découvrir les programmes', consultation: 'Demander une consultation gratuite' },
+  de: { nav: ['Programme', 'Über uns', 'Methode', 'Pakete', 'Kontakt'], start: 'Loslegen', hero: 'Lernen Sie die Sprache. Verändern Sie Ihre Zukunft.', accent: 'neue Perspektiven.', description: 'Praktisches Sprachtraining für Alltag, Karriere und internationale Chancen.', programs: 'Programme entdecken', consultation: 'Kostenlose Beratung anfragen' },
+  ar: { nav: ['البرامج', 'من نحن', 'الطريقة', 'الباقات', 'اتصل بنا'], start: 'ابدأ التعلم', hero: 'تعلم اللغة. غيّر مستقبلك.', accent: 'نحو مستقبل جديد.', description: 'تدريب عملي على اللغة للحياة العملية والنمو المهني وفرص الحياة الدولية.', programs: 'استكشف البرامج', consultation: 'اطلب استشارة مجانية' },
 };
 
 function App() {
@@ -19,7 +22,7 @@ function App() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitting, setSubmitting] = useState(false);
-  const text = copy[language as 'en'];
+  const text = copy[language];
 
   const updateForm = (field: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -63,7 +66,7 @@ function App() {
             <span className="text-xl font-extrabold">Lingo<span className="text-[#14b8a6]">-In</span></span>
           </a>
           <nav className="hidden items-center gap-8 text-sm font-semibold text-[#374151] lg:flex">
-            {text.nav.map((item) => <a key={item} href={item === 'About' ? '#about' : item === 'Method' ? '#method' : item === 'Packages' ? '#packages' : item === 'Contact' ? '#join-us' : '#programs'} className="nav-link">{item}</a>)}
+            {text.nav.map((item) => <a key={item} href={item === 'About' || item === 'À propos' || item === 'Über uns' || item === 'من نحن' ? '#about' : item === 'Method' || item === 'Méthode' || item === 'Methode' || item === 'الطريقة' ? '#method' : item === 'Packages' || item === 'Forfaits' || item === 'Pakete' || item === 'الباقات' ? '#packages' : item === 'Contact' || item === 'اتصل بنا' || item === 'Kontakt' ? '#join-us' : '#programs'}>{item}</a>)}
           </nav>
           <div className="hidden items-center gap-4 lg:flex">
             <div className="language-switcher">
@@ -71,7 +74,6 @@ function App() {
                 <button key={item} type="button" onClick={() => setLanguage(item)} className={`language-option ${language === item ? 'active' : ''}`}>{labels[item]}</button>
               ))}
             </div>
-            <a href="#join-us" className="rounded-xl bg-[#14b8a6] px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-[#14b8a6]/20">{text.start}</a>
           </div>
           <button type="button" onClick={() => setMenuOpen((open) => !open)} className="rounded-lg p-2 lg:hidden" aria-label="Menu">
             {menuOpen ? <X size={25} /> : <Menu size={25} />}
@@ -98,7 +100,7 @@ function App() {
               </h1>
               <p className="mt-7 max-w-xl text-lg leading-8 text-[#dce7f2]">{text.description}</p>
               <div className="mt-9 flex flex-wrap gap-4">
-                <a href="#programs" className="flex items-center gap-2 rounded-xl bg-[#14b8a6] px-6 py-4 font-extrabold text-white shadow-xl shadow-[#14b8a6]/20">{text.programs} <ArrowRight size={18} /></a>
+                <a href="#programs" className="flex items-center gap-2 rounded-xl bg-[#14b8a6] px-6 py-4 font-extrabold text-white shadow-xl shadow-[#14b8a6]/20">{text.programs} <ArrowRight size={20} /></a>
                 <button type="button" onClick={() => setShowGermanPathway(true)} className="rounded-xl border border-white/20 bg-white/10 px-6 py-4 font-extrabold">Explore German pathway</button>
               </div>
             </div>
@@ -106,7 +108,7 @@ function App() {
               <div className="rounded-2xl bg-white p-5 text-[#0b2d5b] shadow-2xl">
                 <div className="flex items-center justify-between"><span className="text-sm font-bold">Free consultation</span><span className="live-pulse" /></div>
                 <div className="mt-5 space-y-3">
-                  {['Certified teachers', 'Flexible schedules', 'Practical classes'].map((item) => <div key={item} className="flex items-center gap-3 rounded-xl bg-[#f0f8f8] p-3 text-sm font-bold"><span className="check-dot"><Check size={14} /></span>{item}</div>)}
+                  {['Certified teachers', 'Flexible schedules', 'Practical classes'].map((item) => <div key={item} className="flex items-center gap-3 rounded-xl bg-[#f0f8f8] p-3 text-sm font-bold"><Check size={17} className="text-[#14b8a6]" />{item}</div>)}
                 </div>
               </div>
             </div>
@@ -135,7 +137,7 @@ function App() {
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
             <div>
               <span className="section-kicker">About Lingo-In</span>
-              <h2 className="mt-4 text-4xl font-extrabold">Built around <span class="text-[#14b8a6]">your opportunity</span></h2>
+              <h2 className="mt-4 text-4xl font-extrabold">Built around <span className="text-[#14b8a6]">your opportunity</span></h2>
               <p className="mt-6 text-lg leading-8 text-[#64748b]">Lingo-In makes language learning practical, personal, and connected to the future you want.</p>
             </div>
             <div className="method-art">
@@ -147,7 +149,7 @@ function App() {
         </section>
 
         <section id="method" className="py-20 lg:py-28">
-          <div class="mx-auto max-w-5xl px-5 text-center">
+          <div className="mx-auto max-w-5xl px-5 text-center">
             <span className="section-kicker">Why Lingo-In?</span>
             <h2 className="mt-4 text-4xl font-extrabold">A practical method for <span className="text-[#14b8a6]">real life</span></h2>
           </div>
@@ -160,7 +162,7 @@ function App() {
               {[{ name: 'Essential', price: '300 DH' }, { name: 'Small Group', price: '499 DH' }, { name: 'Intensive', price: '699 DH' }].map((item) => (
                 <article key={item.name} className="rounded-3xl border border-[#dcebef] bg-white p-7 text-center">
                   <h3 className="text-xl font-extrabold">{item.name}</h3><p className="mt-4 text-4xl font-extrabold text-[#14b8a6]">{item.price}</p>
-                  <button type="button" onClick={() => { setSelectedPackage(item.name); document.getElementById('join-us')?.scrollIntoView({ behavior: 'smooth' }); }} className="mt-6 w-full rounded-xl bg-[#0b2d5b] py-3 font-extrabold text-white">Choose package</button>
+                  <button type="button" onClick={() => { setSelectedPackage(item.name); document.getElementById('join-us')?.scrollIntoView({ behavior: 'smooth' }); }} className="mt-6 w-full rounded-xl bg-[#14b8a6] px-5 py-3 font-extrabold text-white">Choose package</button>
                 </article>
               ))}
             </div>
@@ -169,13 +171,13 @@ function App() {
 
         <section id="join-us" className="px-5 py-20 lg:py-28">
           <div className="mx-auto max-w-3xl rounded-[2rem] border border-[#dcebef] bg-white p-6 shadow-xl sm:p-10">
-            <div className="text-center"><span className="section-kicker">Join Lingo-In</span><h2 className="mt-4 text-4xl font-extrabold">Book your free consultation</h2><p className="mt-3 text-[#64748b]">Selected package: <strong>{selectedPackage}</strong></p></div>
+            <div className="text-center"><span className="section-kicker">Join Lingo-In</span><h2 className="mt-4 text-4xl font-extrabold">Book your free consultation</h2><p className="mt-3 text-[#64748b]">Share your details and our team will contact you.</p></div>
             <form onSubmit={handleSubmit} className="mt-8 grid gap-4 sm:grid-cols-2">
               <input value={form.name} onChange={(event) => updateForm('name', event.target.value)} placeholder="Full name" className="rounded-xl border border-[#dcebef] px-4 py-3" required />
               <input value={form.phone} onChange={(event) => updateForm('phone', event.target.value)} placeholder="Phone number" className="rounded-xl border border-[#dcebef] px-4 py-3" required />
               <input type="email" value={form.email} onChange={(event) => updateForm('email', event.target.value)} placeholder="Email address" className="rounded-xl border border-[#dcebef] px-4 py-3 sm:col-span-2" />
               <textarea value={form.message} onChange={(event) => updateForm('message', event.target.value)} placeholder="How can we help?" className="min-h-28 rounded-xl border border-[#dcebef] px-4 py-3 sm:col-span-2" />
-              <button type="submit" disabled={submitting} className="flex items-center justify-center gap-2 rounded-xl bg-[#14b8a6] px-6 py-4 font-extrabold text-white sm:col-span-2"><Phone size={18} />{submitting ? 'Submitting...' : 'Book consultation'}</button>
+              <button type="submit" disabled={submitting} className="flex items-center justify-center gap-2 rounded-xl bg-[#14b8a6] px-6 py-4 font-extrabold text-white sm:col-span-2"><Phone size={18} />{submitting ? 'Sending...' : 'Send request'}</button>
               {status === 'success' && <p className="text-center font-bold text-[#0d9488] sm:col-span-2">Thank you! We will contact you soon.</p>}
               {status === 'error' && <p className="text-center font-bold text-red-600 sm:col-span-2">Please complete the required fields and try again.</p>}
             </form>
@@ -183,7 +185,7 @@ function App() {
         </section>
       </main>
 
-      <footer className="border-t border-[#dcebef] bg-white"><div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between lg:px-8"><strong>Lingo-In</strong><span className="text-sm text-[#64748b]">© 2026 Lingo-In. All rights reserved.</span></div></footer>
+      <footer className="border-t border-[#dcebef] bg-white"><div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between lg:px-8"><strong>Lingo-In</strong><p className="text-sm text-[#64748b]">Language learning for your future.</p></div></footer>
     </div>
   );
 }
