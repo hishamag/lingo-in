@@ -4,6 +4,7 @@ import App from './App.tsx';
 import { WhatsAppButton } from './components/WhatsAppButton';
 import { WhatsAppContactUpdater } from './components/WhatsAppContactUpdater';
 import './index.css';
+import './color-enhancement.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
