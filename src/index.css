@@ -66,3 +66,24 @@ button, input { font: inherit; }
 .social { display: grid; height: 34px; width: 34px; place-items: center; border-radius: 50%; background: #eff8f8; color: #14b8a6; transition: all .2s; }
 .social:hover { background: #14b8a6; color: white; transform: translateY(-2px); }
 @media (max-width: 640px) { .method-art { height: 300px; } .circle-back { width: 230px; height: 230px; } .circle-front { width: 175px; height: 175px; } .method-letter { font-size: 170px; } .note-one { right: -3px; } .note-two { left: -3px; } }
+
+/* Academic profile frame with gold seal */
+.profile-frame { background: radial-gradient(circle at 30% 20%, #ffffff, #eef8f9 70%); }
+.profile-rings { position: absolute; inset: 0; background: radial-gradient(circle at 70% 80%, rgba(245,158,11,.14), transparent 45%), radial-gradient(circle at 20% 85%, rgba(20,184,166,.14), transparent 40%); pointer-events: none; }
+.profile-rings::before, .profile-rings::after { content: ''; position: absolute; border-radius: 50%; border: 1.5px solid rgba(20,184,166,.18); }
+.profile-rings::before { width: 200px; height: 200px; right: -50px; top: -50px; }
+.profile-rings::after { width: 150px; height: 150px; left: -40px; bottom: 30%; border-color: rgba(245,158,11,.2); }
+.gold-seal { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(145deg, #fde68a 0%, #f59e0b 45%, #b45309 100%); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 10px 25px rgba(180,83,9,.35), inset 0 0 0 3px rgba(255,255,255,.35), inset 0 0 0 6px rgba(180,83,9,.25); animation: seal-shine 4s ease-in-out infinite; }
+.gold-seal svg { filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
+@keyframes seal-shine { 0%, 100% { box-shadow: 0 10px 25px rgba(180,83,9,.35), inset 0 0 0 3px rgba(255,255,255,.35), inset 0 0 0 6px rgba(180,83,9,.25); } 50% { box-shadow: 0 10px 32px rgba(245,158,11,.55), inset 0 0 0 3px rgba(255,255,255,.5), inset 0 0 0 6px rgba(180,83,9,.25); } }
+
+/* Global polish */
+.course-card, .article-card, .icon-box, .gold-seal, .social { will-change: transform; }
+header { backdrop-filter: blur(8px); }
+a, button { transition-property: color, background-color, border-color, transform, box-shadow; transition-duration: .2s; }
+.hero-card-live:hover { animation-play-state: paused; transform: translateY(-4px); transition: transform .3s ease; }
+section { scroll-margin-top: 90px; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.course-card:hover .icon-box { transform: scale(1.08) rotate(-4deg); }
+.icon-box { transition: transform .25s ease; }
+::selection { background: rgba(20,184,166,.25); }
