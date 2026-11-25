@@ -87,3 +87,12 @@ section { scroll-margin-top: 90px; }
 .course-card:hover .icon-box { transform: scale(1.08) rotate(-4deg); }
 .icon-box { transition: transform .25s ease; }
 ::selection { background: rgba(20,184,166,.25); }
+
+/* Scroll progress bar */
+.scroll-progress { position: fixed; top: 0; left: 0; right: 0; z-index: 50; height: 3px; background: transparent; pointer-events: none; }
+.scroll-progress-bar { height: 100%; background: linear-gradient(90deg, #14b8a6, #f59e0b); transition: width .1s linear; }
+
+/* Scroll reveal */
+[data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+[data-reveal].revealed { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; transition: none; } .hero-card-live, .certificate-card, .gold-seal { animation: none; } }
