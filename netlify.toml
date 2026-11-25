@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # The Supabase anon key is a public client key that Vite inlines into the
+  # browser bundle by design, so exclude it from secret scanning.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
