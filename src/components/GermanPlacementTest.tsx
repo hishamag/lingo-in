@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Award, CheckCircle2, Clock3, GraduationCap, Headphones, Pause, Play, RotateCcw, Target } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Award, Check, CheckCircle2, Clock3, Copy, GraduationCap, Headphones, MessageCircle, Pause, Play, RotateCcw, Share2, Target } from 'lucide-react';
 
 type Question = {
   prompt: string;
@@ -54,6 +54,7 @@ export function GermanPlacementTest({ onExit }: GermanPlacementTestProps) {
   const [audioError, setAudioError] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
   const [voiceReady, setVoiceReady] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   const question = questions[currentQuestion];
@@ -111,6 +112,24 @@ export function GermanPlacementTest({ onExit }: GermanPlacementTestProps) {
     window.speechSynthesis.speak(utterance);
   };
 
+  const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/test` : '/test';
+  const shareText = 'Mach den kostenlosen Deutsch-Einstufungstest von Lingo-In.';
+
+  const shareOnWhatsApp = () => {
+    const message = encodeURIComponent(`${shareText}\n${shareUrl}`);
+    window.open(`https://wa.me/?text=${message}`, '_blank', 'noopener,noreferrer');
+  };
+
+  const copyTestLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+      setLinkCopied(true);
+      window.setTimeout(() => setLinkCopied(false), 2200);
+    } catch {
+      setLinkCopied(false);
+    }
+  };
+
   const restart = () => {
     stopAudio();
     setStarted(false);
@@ -155,6 +174,10 @@ export function GermanPlacementTest({ onExit }: GermanPlacementTestProps) {
             <h1 className="mt-4 max-w-2xl text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">Finde dein <span className="text-[#14b8a6]">Deutsch-Niveau.</span></h1>
             <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">Mach unseren kurzen Einstufungstest mit Grammatik- und Hörverstehen-Aufgaben und erhalte eine erste Empfehlung von A1 bis B2. Ohne Anmeldung und in ungefähr sieben Minuten.</p>
             <button type="button" onClick={() => setStarted(true)} className="mt-9 inline-flex items-center gap-3 rounded-full bg-[#f59e0b] px-7 py-4 font-extrabold text-[#0b2d5b] shadow-xl shadow-[#f59e0b]/20 transition hover:-translate-y-1 hover:bg-[#ffb41d]">Test starten <ArrowRight size={18} /></button>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <button type="button" onClick={shareOnWhatsApp} className="inline-flex items-center gap-2 rounded-full bg-[#25d366] px-4 py-2.5 text-xs font-extrabold text-white shadow-lg shadow-[#25d366]/15 transition hover:-translate-y-0.5 hover:bg-[#20bd5a]"><MessageCircle size={15} /> Auf WhatsApp teilen</button>
+              <button type="button" onClick={copyTestLink} className="inline-flex items-center gap-2 rounded-full border border-[#dcebef] bg-white px-4 py-2.5 text-xs font-extrabold text-[#0b2d5b] transition hover:-translate-y-0.5 hover:border-[#14b8a6]">{linkCopied ? <Check size={15} className="text-[#14b8a6]" /> : <Copy size={15} />} {linkCopied ? 'Link kopiert' : 'Link kopieren'}</button>
+            </div>
             <div className="mt-10 flex flex-wrap gap-5 text-sm font-semibold text-slate-500"><span className="inline-flex items-center gap-2"><Clock3 size={17} className="text-[#14b8a6]" /> 7 Minuten</span><span className="inline-flex items-center gap-2"><Target size={17} className="text-[#14b8a6]" /> A1 bis B2</span><span className="inline-flex items-center gap-2"><CheckCircle2 size={17} className="text-[#14b8a6]" /> Sofortiges Ergebnis</span></div>
           </div>
           <div className="relative overflow-hidden rounded-[2rem] bg-[#0b2d5b] p-6 text-white shadow-2xl shadow-[#0b2d5b]/15 sm:p-9">
@@ -220,33 +243,25 @@ export function GermanPlacementTest({ onExit }: GermanPlacementTestProps) {
           <h2 className="mt-4 text-2xl font-extrabold leading-relaxed sm:text-3xl">{question.prompt}</h2>
 
           {isListeningQuestion && (
-            <div className="mt-7 rounded-2xl border border-[#b9e9e3] bg-[#e8faf8] p-4 sm:p-5">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm font-extrabold text-[#0b2d5b]">Höre den Satz aufmerksam an.</p>
-                  <p className="mt-1 text-xs leading-5 text-slate-500">Du kannst die Wiedergabe mehrmals starten.</p>
+            <div className="listening-card mt-7 overflow-hidden rounded-[1.75rem] border border-[#1d3c68] bg-[#0b2d5b] text-white shadow-xl shadow-[#0b2d5b]/15">
+              <div className="relative overflow-hidden p-5 sm:p-6">
+                <div className="absolute -right-16 -top-20 h-48 w-48 rounded-full border border-[#14b8a6]/20" />
+                <div className="relative flex items-start justify-between gap-4">
+                  <div><span className="inline-flex items-center gap-2 rounded-full border border-[#14b8a6]/35 bg-[#14b8a6]/10 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[.16em] text-[#8ff4e8]"><Headphones size={13} /> Hörverstehen</span><p className="mt-4 text-lg font-extrabold">Höre den Satz aufmerksam an.</p><p className="mt-1 text-xs leading-5 text-blue-100/70">Du kannst die Wiedergabe mehrmals starten.</p></div>
+                  <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-bold text-blue-100">DE · AUDIO</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={toggleAudio}
-                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-[#0b2d5b] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#08254b]"
-                >
-                  {isPlaying ? <Pause size={17} /> : <Play size={17} fill="currentColor" />}
-                  {isPlaying ? 'Pause' : 'Audio abspielen'}
-                </button>
+                <div className="relative mt-7 rounded-2xl border border-white/10 bg-[#071d3d] px-4 py-5">
+                  <div className="flex h-12 items-center justify-center gap-1.5" aria-hidden="true">{Array.from({ length: 26 }, (_, index) => <span key={index} className={`w-1 rounded-full bg-gradient-to-t from-[#14b8a6] to-[#8ff4e8] transition-opacity ${isPlaying ? 'animate-pulse opacity-100' : 'opacity-55'}`} style={{ height: `${18 + ((index * 17) % 28)}px`, animationDelay: `${index * 35}ms` }} />)}</div>
+                  <div className="mt-4 flex items-center justify-between text-[10px] font-bold text-blue-100/60"><span>{isPlaying ? 'Wiedergabe läuft' : 'Bereit zum Anhören'}</span><span>Deutsch · 0:00</span></div>
+                </div>
+                <div className="relative mt-5 flex flex-wrap items-center gap-3">
+                  <button type="button" onClick={toggleAudio} className="inline-flex items-center justify-center gap-2 rounded-full bg-[#14b8a6] px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-[#14b8a6]/20 transition hover:-translate-y-0.5 hover:bg-[#0da599]">{isPlaying ? <Pause size={17} /> : <Play size={17} fill="currentColor" />} {isPlaying ? 'Pause' : 'Audio abspielen'}</button>
+                  <button type="button" onClick={() => setShowTranscript((value) => !value)} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-3 text-xs font-bold text-blue-50 transition hover:bg-white/15">{showTranscript ? 'Text verbergen' : 'Text einblenden'}</button>
+                </div>
+                {audioError && <p className="relative mt-3 text-xs font-semibold text-amber-200">Die Sprachausgabe ist auf diesem Gerät nicht verfügbar. Du kannst den Text stattdessen lesen.</p>}
+                {!audioError && !voiceReady && <p className="relative mt-3 text-xs font-semibold text-blue-100/60">Stimme wird geladen …</p>}
               </div>
-              {audioError && (
-                <div className="mt-3">
-                  <p className="text-xs font-semibold text-[#b45309]">Die Sprachausgabe ist auf diesem Gerät nicht verfügbar. Du kannst den Text stattdessen lesen.</p>
-                  <button type="button" onClick={() => setShowTranscript((v) => !v)} className="mt-2 text-xs font-bold text-[#0b2d5b] underline underline-offset-2">{showTranscript ? 'Text verbergen' : 'Text anzeigen'}</button>
-                </div>
-              )}
-              {showTranscript && (
-                <p className="mt-3 rounded-xl bg-white/70 p-3 text-sm italic leading-6 text-slate-600">„{question.listeningText}"</p>
-              )}
-              {!audioError && !voiceReady && (
-                <p className="mt-3 text-xs font-semibold text-slate-400">Stimme wird geladen …</p>
-              )}
+              {showTranscript && <div className="border-t border-white/10 bg-white/5 p-5 text-sm italic leading-7 text-blue-50">„{question.listeningText}"</div>}
             </div>
           )}
 
