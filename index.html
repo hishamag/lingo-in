@@ -2,34 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <link rel="icon" type="image/png" href="/images/favicon.png" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Lingo-in | Online German Language Learning</title>
-
-    <meta
-      name="description"
-      content="Lingo-in is an online language learning center offering personalized one-to-one and group German lessons with experienced teachers."
-    />
-
+    <meta name="description" content="Lingo-in is an online language learning center offering personalized one-to-one and group German lessons with experienced teachers." />
     <meta property="og:title" content="Lingo-in | Learn German Online" />
-    <meta
-      property="og:description"
-      content="Learn German online with Lingo-in through personalized one-to-one and group lessons."
-    />
+    <meta property="og:description" content="Learn German online with Lingo-in through personalized one-to-one and group lessons." />
     <meta property="og:image" content="https://lingo-in.com/favicon.png" />
-
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Lingo-in | Learn German Online" />
-    <meta
-      name="twitter:description"
-      content="Personalized online German language courses, one-to-one or in groups."
-    />
+    <meta name="twitter:description" content="Personalized online German language courses, one-to-one or in groups." />
     <meta name="twitter:image" content="https://lingo-in.com/favicon.png" />
+    <script>
+      (() => {
+        const addCvLinks = () => {
+          document.querySelectorAll('header nav').forEach((nav) => {
+            if (nav.querySelector('[data-cv-nav]')) return;
+            const link = document.createElement('a');
+            link.href = '/lebenslauf.html';
+            link.dataset.cvNav = 'true';
+            link.textContent = 'German CV Builder';
+            link.className = nav.classList.contains('hidden')
+              ? 'text-amber-300 transition hover:text-white'
+              : 'nav-link';
+            nav.appendChild(link);
+          });
+        };
+        new MutationObserver(addCvLinks).observe(document.documentElement, { childList: true, subtree: true });
+        document.addEventListener('DOMContentLoaded', addCvLinks);
+      })();
+    </script>
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
