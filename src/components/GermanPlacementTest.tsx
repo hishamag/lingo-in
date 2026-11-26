@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Award, Check, CheckCircle2, Clock3, Copy, GraduationCap, Headphones, MessageCircle, Pause, Play, RotateCcw, Share2, Target } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Award, Check, CheckCircle2, Clock3, Copy, GraduationCap, Headphones, MessageCircle, Pause, Play, RotateCcw, Target } from 'lucide-react';
 
 type Question = {
   prompt: string;

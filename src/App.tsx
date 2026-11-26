@@ -20,7 +20,6 @@ import {
   Phone,
   Play,
   Search,
-  Share2,
   Sparkles,
   Star,
   Target,

@@ -22,7 +22,7 @@ function updateDisplayedPhoneNumbers() {
     if (!node.textContent) continue;
     let updatedText = node.textContent;
     for (const oldPhone of OLD_PHONE_PATTERNS) {
-      updatedText = updatedText.replaceAll(oldPhone, DISPLAY_PHONE);
+      updatedText = updatedText.split(oldPhone).join(DISPLAY_PHONE);
     }
     if (updatedText !== node.textContent) node.textContent = updatedText;
   }
