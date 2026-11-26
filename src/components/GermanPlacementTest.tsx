@@ -112,7 +112,7 @@ export function GermanPlacementTest({ onExit }: GermanPlacementTestProps) {
     window.speechSynthesis.speak(utterance);
   };
 
-  const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/test` : '/test';
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '/test';
   const shareText = 'Mach den kostenlosen Deutsch-Einstufungstest von Lingo-In.';
 
   const shareOnWhatsApp = () => {
@@ -122,7 +122,7 @@ export function GermanPlacementTest({ onExit }: GermanPlacementTestProps) {
 
   const copyTestLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+      await navigator.clipboard.writeText(shareUrl);
       setLinkCopied(true);
       window.setTimeout(() => setLinkCopied(false), 2200);
     } catch {

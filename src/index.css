@@ -85,9 +85,12 @@ button, input { font: inherit; }
 .certificate-result-seal { box-shadow: 0 10px 22px rgba(245,158,11,.2), inset 0 0 0 2px rgba(255,255,255,.3); }
 .certificate-result-ribbon { white-space: nowrap; }
 .profile-frame { isolation: isolate; }
-.profile-photo-shell { position: relative; z-index: 1; display: grid; width: min(100%, 250px); aspect-ratio: 1; margin: 52px auto 8px; place-items: center; border: 8px solid rgba(255,255,255,.78); border-radius: 50%; background: #d9f1f0; box-shadow: 0 18px 35px rgba(11,45,91,.18), 0 0 0 1px rgba(20,184,166,.25); overflow: hidden; }
+.profile-photo-wrap { position: relative; z-index: 1; width: min(100%, 250px); margin: 52px auto 8px; }
+.profile-photo-shell { position: relative; display: grid; width: 100%; aspect-ratio: 1; place-items: center; border: 8px solid rgba(255,255,255,.78); border-radius: 50%; background: #d9f1f0; box-shadow: 0 18px 35px rgba(11,45,91,.18), 0 0 0 1px rgba(20,184,166,.25); overflow: hidden; }
+.profile-seal { position: absolute; right: -4px; bottom: 4px; z-index: 3; width: 92px; height: 92px; font-size: 11px; }
 .profile-photo-shell::after { position: absolute; inset: 10px; content: ''; border: 1px solid rgba(245,158,11,.7); border-radius: 50%; pointer-events: none; }
 .profile-photo { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+@media (max-width: 640px) { .profile-photo-wrap { width: min(100%, 230px); } .profile-seal { right: -2px; bottom: 2px; width: 86px; height: 86px; } }
 .course-card, .article-card, .icon-box, .gold-seal, .social { will-change: transform; }
 header { backdrop-filter: blur(8px); }
 a, button { transition-property: color, background-color, border-color, transform, box-shadow; transition-duration: .2s; }
