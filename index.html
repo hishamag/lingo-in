@@ -22,6 +22,9 @@
       .cv-nav-link.mobile:hover { color: #fff; }
       @media (max-width: 1100px) and (min-width: 1024px) { .cv-nav-link.desktop { padding: 9px 10px; font-size: 11px; } .cv-nav-link.desktop svg { width: 14px; height: 14px; } }
       @media (prefers-reduced-motion: reduce) { .cv-nav-link { transition: none; } }
+      /* Keep the academic badge clear of the portrait's face. */
+      .profile-seal { right: -18px; bottom: -24px; width: 72px; height: 72px; }
+      @media (max-width: 640px) { .profile-seal { right: -14px; bottom: -20px; width: 68px; height: 68px; } }
     </style>
     <script>
       (() => {
@@ -61,7 +64,12 @@
           });
         };
 
-        new MutationObserver(updateCvLinks).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        // The app changes the active language button on click. Avoid observing all
+        // attribute changes here: updating the link's class would retrigger it endlessly.
+        document.addEventListener('click', (event) => {
+          if (event.target.closest('.language-option')) requestAnimationFrame(updateCvLinks);
+        });
+        new MutationObserver(updateCvLinks).observe(document.documentElement, { childList: true, subtree: true });
         document.addEventListener('DOMContentLoaded', updateCvLinks);
         updateCvLinks();
       })();
