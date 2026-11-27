@@ -35,43 +35,54 @@
           ar: { label: 'صانع السيرة الذاتية', mobileLabel: 'صانع السيرة الذاتية الألمانية', aria: 'فتح صانع السيرة الذاتية الألمانية' }
         };
 
-        const detectLanguage = () => {
-          const active = document.querySelector('.language-option.active');
-          const title = active?.getAttribute('title')?.toLowerCase() || '';
+        const getLanguage = () => {
+          const title = document.querySelector('.language-option.active')?.getAttribute('title')?.toLowerCase() || '';
           if (title.includes('français') || title.includes('french')) return 'fr';
           if (title.includes('deutsch') || title.includes('german')) return 'de';
           if (title.includes('arab')) return 'ar';
           return 'en';
         };
 
-        const updateCvLinks = () => {
-          const language = detectLanguage();
-          const text = cvLabels[language];
-          document.documentElement.lang = language;
+        const makeLink = (nav, language) => {
+          const isDesktop = nav.classList.contains('lg:flex');
+          const label = cvLabels[language];
+          const link = document.createElement('a');
+          link.href = '/lebenslauf.html';
+          link.dataset.cvNav = 'true';
+          link.className = `cv-nav-link ${isDesktop ? 'desktop' : 'mobile'}`;
+          link.setAttribute('aria-label', label.aria);
+          link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg><span></span>';
+          link.querySelector('span').textContent = isDesktop ? label.label : label.mobileLabel;
+          nav.appendChild(link);
+        };
+
+        const ensureCvLinks = () => {
+          const language = getLanguage();
           document.querySelectorAll('header nav').forEach((nav) => {
-            let link = nav.querySelector('[data-cv-nav]');
-            if (!link) {
-              link = document.createElement('a');
-              link.href = '/lebenslauf.html';
-              link.dataset.cvNav = 'true';
-              link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg><span></span>';
-              nav.appendChild(link);
-            }
-            const isDesktop = nav.classList.contains('lg:flex');
-            link.className = `cv-nav-link ${isDesktop ? 'desktop' : 'mobile'}`;
-            link.setAttribute('aria-label', text.aria);
-            link.querySelector('span').textContent = isDesktop ? text.label : text.mobileLabel;
+            if (!nav.querySelector('[data-cv-nav]')) makeLink(nav, language);
           });
         };
 
-        // The app changes the active language button on click. Avoid observing all
-        // attribute changes here: updating the link's class would retrigger it endlessly.
+        const refreshCvLabels = () => {
+          const language = getLanguage();
+          const labels = cvLabels[language];
+          document.documentElement.lang = language;
+          ensureCvLinks();
+          document.querySelectorAll('header nav [data-cv-nav]').forEach((link) => {
+            const isDesktop = link.closest('nav').classList.contains('lg:flex');
+            link.setAttribute('aria-label', labels.aria);
+            link.querySelector('span').textContent = isDesktop ? labels.label : labels.mobileLabel;
+          });
+        };
+
+        // The observer only adds missing links. It never reacts to label text or
+        // class updates, avoiding a child-list mutation loop that can freeze React.
+        new MutationObserver(ensureCvLinks).observe(document.documentElement, { childList: true, subtree: true });
         document.addEventListener('click', (event) => {
-          if (event.target.closest('.language-option')) requestAnimationFrame(updateCvLinks);
+          if (event.target.closest('.language-option')) requestAnimationFrame(refreshCvLabels);
         });
-        new MutationObserver(updateCvLinks).observe(document.documentElement, { childList: true, subtree: true });
-        document.addEventListener('DOMContentLoaded', updateCvLinks);
-        updateCvLinks();
+        document.addEventListener('DOMContentLoaded', refreshCvLabels);
+        refreshCvLabels();
       })();
     </script>
   </head>
