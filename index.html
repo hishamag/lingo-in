@@ -25,21 +25,45 @@
     </style>
     <script>
       (() => {
-        const addCvLinks = () => {
+        const cvLabels = {
+          en: { label: 'CV Builder', mobileLabel: 'German CV Builder', aria: 'Open the German CV Builder' },
+          fr: { label: 'Créateur de CV', mobileLabel: 'Créateur de CV allemand', aria: 'Ouvrir le créateur de CV allemand' },
+          de: { label: 'Lebenslauf-Editor', mobileLabel: 'Deutscher Lebenslauf-Editor', aria: 'Den Lebenslauf-Editor öffnen' },
+          ar: { label: 'صانع السيرة الذاتية', mobileLabel: 'صانع السيرة الذاتية الألمانية', aria: 'فتح صانع السيرة الذاتية الألمانية' }
+        };
+
+        const detectLanguage = () => {
+          const active = document.querySelector('.language-option.active');
+          const title = active?.getAttribute('title')?.toLowerCase() || '';
+          if (title.includes('français') || title.includes('french')) return 'fr';
+          if (title.includes('deutsch') || title.includes('german')) return 'de';
+          if (title.includes('arab')) return 'ar';
+          return 'en';
+        };
+
+        const updateCvLinks = () => {
+          const language = detectLanguage();
+          const text = cvLabels[language];
+          document.documentElement.lang = language;
           document.querySelectorAll('header nav').forEach((nav) => {
-            if (nav.querySelector('[data-cv-nav]')) return;
-            const link = document.createElement('a');
+            let link = nav.querySelector('[data-cv-nav]');
+            if (!link) {
+              link = document.createElement('a');
+              link.href = '/lebenslauf.html';
+              link.dataset.cvNav = 'true';
+              link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg><span></span>';
+              nav.appendChild(link);
+            }
             const isDesktop = nav.classList.contains('lg:flex');
-            link.href = '/lebenslauf.html';
-            link.dataset.cvNav = 'true';
             link.className = `cv-nav-link ${isDesktop ? 'desktop' : 'mobile'}`;
-            link.setAttribute('aria-label', 'Open the German CV Builder');
-            link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg><span>' + (isDesktop ? 'CV Builder' : 'German CV Builder') + '</span>';
-            nav.appendChild(link);
+            link.setAttribute('aria-label', text.aria);
+            link.querySelector('span').textContent = isDesktop ? text.label : text.mobileLabel;
           });
         };
-        new MutationObserver(addCvLinks).observe(document.documentElement, { childList: true, subtree: true });
-        document.addEventListener('DOMContentLoaded', addCvLinks);
+
+        new MutationObserver(updateCvLinks).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        document.addEventListener('DOMContentLoaded', updateCvLinks);
+        updateCvLinks();
       })();
     </script>
   </head>
